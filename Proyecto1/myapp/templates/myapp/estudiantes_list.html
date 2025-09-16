@@ -8,7 +8,15 @@
     <ul>
         {% for estudiante in estudiantes %}
             <li>{{ estudiante.nombre }} {{ estudiante.apellido }}</li>
+            <li>Email: {{ estudiante.email }}</li>
         {% endfor %}
     </ul>
+    <nav>
+        <ul>
+            <li><a href="{% url 'myapp:index' %}">Home</a></li>
+            <li><a href="#">Estudiantes</a></li>
+            <li><a href="{% url 'myapp:cursos' %}">Cursos</a></li>
+        </ul>
+    </nav>
 </body>
 </html>
