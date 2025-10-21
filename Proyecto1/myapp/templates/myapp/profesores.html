@@ -3,6 +3,24 @@
 {% block content %}
 <div class="container mt-4">
     <h1 class="text-center mb-4">Lista de Profesores</h1>
+
+    <!-- Botón para agregar -->
+    <div class="text-end mb-4">
+        <a class="btn btn-secondary" href="{% url 'myapp:profesorFormulario' %}">Agregar Profesor</a>
+    </div>
+
+    <!-- 🔍 Formulario de búsqueda -->
+    <form method="get" action="{% url 'myapp:profesores' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Buscar por nombre, apellido o profesión"
+                value="{{ query|default_if_none:'' }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Buscar
+            </button>
+        </div>
+    </form>
+
+    <!-- Resultados -->
     <div class="row">
         {% for profesor in profesores %}
         <div class="col-md-4 col-sm-6 mb-4">

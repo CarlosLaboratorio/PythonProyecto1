@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Estudiante, Profesor, Curso, Entregable
-from .forms import CursoFormulario 
+from .forms import CursoFormulario, ProfesorFormulario
+from django.db import models
 
 def index(request):
     estudiantes = Estudiante.objects.all()
@@ -35,3 +36,20 @@ def cursoFormulario(request):
         form = CursoFormulario() 
         
     return render(request, 'myapp/curso_formulario.html', {'form': form})
+
+def profesorFormulario(request):
+    if request.method == 'POST':
+        form = ProfesorFormulario(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            apellido = form.cleaned_data['apellido']
+            email = form.cleaned_data['email']
+            profesion = form.cleaned_data['profesion']
+
+            profesor = Profesor(nombre=nombre, apellido=apellido, email=email, profesion=profesion)
+            profesor.save()
+            return redirect('myapp:profesores')  # Redirige a la lista de profesores
+    else:
+        form = ProfesorFormulario()
+
+    return render(request, 'myapp/profesor_formulario.html', {'form': form})
