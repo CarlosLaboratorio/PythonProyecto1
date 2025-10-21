@@ -16,8 +16,22 @@ def cursos(request):
     return render(request, 'myapp/cursos.html',{'cursos': cursos})
 
 def profesores(request):
-    profesores = Profesor.objects.all()
-    return render(request, 'myapp/profesores.html',{'profesores': profesores})
+    query = request.GET.get('q')  # Captura lo que se escribe en el buscador
+    if query:
+        profesores = Profesor.objects.filter(
+            models.Q(nombre__icontains=query) |
+            models.Q(apellido__icontains=query) |
+            models.Q(profesion__icontains=query)
+        )
+    else:
+        profesores = Profesor.objects.all()
+
+
+    return render(request, 'myapp/profesores.html', {
+        'profesores': profesores,
+        'query': query,
+    })
+
 
 def entregables(request):
     entregables = Entregable.objects.all()
