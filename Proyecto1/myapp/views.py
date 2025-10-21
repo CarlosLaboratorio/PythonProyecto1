@@ -92,3 +92,12 @@ def profesor_editar(request, id):
         form = ProfesorForm(instance=profesor)
     
     return render(request, 'myapp/profesor_editar.html', {'form': form, 'profesor': profesor})
+
+def profesor_eliminar(request, id):
+    profesor = get_object_or_404(Profesor, id=id)
+
+    if request.method == 'POST':
+        profesor.delete()
+        return redirect('myapp:profesores')
+
+    return render(request, 'myapp/profesor_confirm_delete.html', {'profesor': profesor})

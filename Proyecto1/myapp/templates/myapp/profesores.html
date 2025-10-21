@@ -24,52 +24,27 @@
         {% for profesor in profesores %}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">
-                        {{ profesor.apellido }} {{ profesor.nombre }}
-                    </h5>
-                    <p class="card-text mb-1">
-                        <strong>Email:</strong> {{ profesor.email }}
-                    </p>
-                    <p class="card-text">
-                        <strong>Profesión:</strong> {{ profesor.profesion }}
-                    </p>
-                </div>
-                <div class="mt-3 d-flex justify-content-between">
-                    <a class="btn btn-outline-primary btn-sm" href="{% url 'myapp:profesorEditar' profesor.id %}">
-                    Editar
-                    </a>
-                </div>
-                <!-- Botón que abre el modal -->
-                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal{{ profesor.id }}">
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ profesor.apellido }} {{ profesor.nombre }}</h5>
+                <p class="card-text mb-1"><strong>Email:</strong> {{ profesor.email }}</p>
+                <p class="card-text"><strong>Profesión:</strong> {{ profesor.profesion }}</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{% url 'myapp:profesorEditar' profesor.id %}" class="btn btn-warning btn-sm me-2">Editar</a>
+                <a href="{% url 'myapp:profesorEliminar' profesor.id %}" 
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('¿Seguro que deseas eliminar a {{ profesor.nombre }} {{ profesor.apellido }}?')">
                 Eliminar
-                </button>
+                </a>
+            </div>
             </div>
         </div>
+        
         {% empty %}
         <p class="text-muted text-center">No hay profesores registrados.</p>
         {% endfor %}
     </div>
 </div>
-    <!-- Modal de confirmación -->
-    <div class="modal fade" id="confirmModal{{ profesor.id }}" tabindex="-1" aria-labelledby="confirmModalLabel{{ profesor.id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="confirmModalLabel{{ profesor.id }}">Confirmar eliminación</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-            ¿Estás seguro de que querés eliminar al profesor <strong>{{ profesor.apellido }} {{ profesor.nombre }}</strong>?
-        </div>
-        <div class="modal-footer">
-            <form method="POST" action="{% url 'myapp:profesorEliminar' profesor.id %}">
-            {% csrf_token %}
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
-        </div>
-        </div>
     </div>
     </div>
 {% endblock %}
