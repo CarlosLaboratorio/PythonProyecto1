@@ -8,8 +8,20 @@ def index(request):
     return render(request, 'myapp/index.html', {'estudiantes': estudiantes})
 
 def estudiantes(request):
-    estudiantes = Estudiante.objects.all()
-    return render(request, 'myapp/estudiantes_list.html', {'estudiantes': estudiantes})
+    query = request.GET.get('q')  # Captura lo que se escribe en el buscador
+    if query:
+        estudiantes = Estudiante.objects.filter(
+            models.Q(nombre__icontains=query) |
+            models.Q(apellido__icontains=query) |
+            models.Q(email__icontains=query)
+        )
+    else:
+        estudiantes = Estudiante.objects.all()
+
+    return render(request, 'myapp/estudiantes_list.html', {
+        'estudiantes': estudiantes,
+        'query': query,
+    })
 
 def cursos(request):
     cursos = Curso.objects.all()
