@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Estudiante, Profesor, Curso, Entregable
-from .forms import CursoFormulario, ProfesorFormulario
+from .forms import CursoFormulario, ProfesorFormulario, ProfesorForm
 from django.db import models
 
 def index(request):
@@ -79,3 +79,16 @@ def profesorFormulario(request):
         form = ProfesorFormulario()
 
     return render(request, 'myapp/profesor_formulario.html', {'form': form})
+
+def profesor_editar(request, id):
+    profesor = get_object_or_404(Profesor, id=id)
+    
+    if request.method == 'POST':
+        form = ProfesorForm(request.POST, instance=profesor)
+        if form.is_valid():
+            form.save()
+            return redirect('myapp:profesores')
+    else:
+        form = ProfesorForm(instance=profesor)
+    
+    return render(request, 'myapp/profesor_editar.html', {'form': form, 'profesor': profesor})

@@ -35,6 +35,15 @@
                         <strong>Profesión:</strong> {{ profesor.profesion }}
                     </p>
                 </div>
+                <div class="mt-3 d-flex justify-content-between">
+                    <a class="btn btn-outline-primary btn-sm" href="{% url 'myapp:profesorEditar' profesor.id %}">
+                    Editar
+                    </a>
+                </div>
+                <!-- Botón que abre el modal -->
+                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal{{ profesor.id }}">
+                Eliminar
+                </button>
             </div>
         </div>
         {% empty %}
@@ -42,4 +51,25 @@
         {% endfor %}
     </div>
 </div>
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmModal{{ profesor.id }}" tabindex="-1" aria-labelledby="confirmModalLabel{{ profesor.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="confirmModalLabel{{ profesor.id }}">Confirmar eliminación</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            ¿Estás seguro de que querés eliminar al profesor <strong>{{ profesor.apellido }} {{ profesor.nombre }}</strong>?
+        </div>
+        <div class="modal-footer">
+            <form method="POST" action="{% url 'myapp:profesorEliminar' profesor.id %}">
+            {% csrf_token %}
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
 {% endblock %}
