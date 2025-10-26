@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Estudiante, Profesor, Curso, Entregable
 from .forms import CursoFormulario, ProfesorFormulario, ProfesorForm
 from django.db import models
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     estudiantes = Estudiante.objects.all()
@@ -44,11 +45,12 @@ def profesores(request):
         'query': query,
     })
 
-
+@login_required
 def entregables(request):
     entregables = Entregable.objects.all()
     return render(request, 'myapp/entregables.html',{'entregables': entregables})
 
+@login_required
 def cursoFormulario(request): 
     if request.method == 'POST': 
         form = CursoFormulario(request.POST) 
@@ -63,6 +65,7 @@ def cursoFormulario(request):
         
     return render(request, 'myapp/curso_formulario.html', {'form': form})
 
+@login_required
 def profesorFormulario(request):
     if request.method == 'POST':
         form = ProfesorFormulario(request.POST)
@@ -80,6 +83,7 @@ def profesorFormulario(request):
 
     return render(request, 'myapp/profesor_formulario.html', {'form': form})
 
+@login_required
 def profesor_editar(request, id):
     profesor = get_object_or_404(Profesor, id=id)
     
@@ -93,6 +97,7 @@ def profesor_editar(request, id):
     
     return render(request, 'myapp/profesor_editar.html', {'form': form, 'profesor': profesor})
 
+@login_required
 def profesor_eliminar(request, id):
     profesor = get_object_or_404(Profesor, id=id)
 
