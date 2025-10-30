@@ -2,7 +2,7 @@
 {% block title %}Página de Cursos{% endblock %} 
 {% block content %} 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Bienvenido a la página de Cursos</h1>
+    <h1 class="text-center mb-4 animate__animated animate__swing">Bienvenido a la página de Cursos</h1>
     <div class="text-end mb-4"> <a class="btn btn-secondary" href="{% url 'myapp:cursoFormulario' %}">Agregar Curso</a> </div>
     <div class="row">
         {% for curso in cursos %}
